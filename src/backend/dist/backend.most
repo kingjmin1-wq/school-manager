@@ -1,0 +1,229 @@
+// Version: 4.0.0
+type AccessControlState__201339279 =
+  {
+    var adminAssigned : Bool;
+    userRoles : Map__230067015<Principal, UserRole__91647283>
+  };
+type ActivityEntry__1056505511 =
+  {
+    at : Timestamp__637991794;
+    id : Id__246398552;
+    kind : ActivityKind__999014920;
+    message : Text;
+    performedBy : Principal
+  };
+type ActivityEntry__227627608 =
+  {
+    at : Timestamp__301639476;
+    id : Id__389469852;
+    kind : ActivityKind__966777251;
+    message : Text;
+    performedBy : Principal
+  };
+type ActivityKind__966777251 =
+  {
+    #classCreated;
+    #classDeleted;
+    #classUpdated;
+    #enrollmentAdded;
+    #enrollmentRemoved;
+    #studentCreated;
+    #studentDeleted;
+    #studentUpdated;
+    #teacherCreated;
+    #teacherDeleted;
+    #teacherUpdated
+  };
+type ActivityKind__999014920 =
+  {
+    #classCreated;
+    #classDeleted;
+    #classUpdated;
+    #enrollmentAdded;
+    #enrollmentRemoved;
+    #studentCreated;
+    #studentDeleted;
+    #studentUpdated;
+    #teacherCreated;
+    #teacherDeleted;
+    #teacherUpdated
+  };
+type Class__199118982 =
+  {
+    capacity : Nat;
+    createdAt : Timestamp__301639476;
+    enrolledCount : Nat;
+    gradeLevel : Text;
+    homeroomTeacherId : ?Id__636884967;
+    id : Id__636884967;
+    name : Text;
+    updatedAt : Timestamp__301639476
+  };
+type Class__536005870 =
+  {
+    capacity : Nat;
+    createdAt : Timestamp__637991794;
+    enrolledCount : Nat;
+    gradeLevel : Text;
+    homeroomTeacherId : ?Id__246398552;
+    id : Id__246398552;
+    name : Text;
+    updatedAt : Timestamp__637991794
+  };
+type Data__44217153<K, V> = {var count : Nat__227979830; kvs : [var ?(K, V)]};
+type Enrollment__1016022953 =
+  {
+    classId : Id__246398552;
+    enrolledAt : Timestamp__637991794;
+    id : Id__246398552;
+    studentId : Id__246398552
+  };
+type Enrollment__624009645 =
+  {
+    classId : Id__404336434;
+    enrolledAt : Timestamp__301639476;
+    id : Id__404336434;
+    studentId : Id__404336434
+  };
+type Gender__183540169 = {#female; #male; #other};
+type Gender__94681853 = {#female; #male; #other};
+type Gender__996925424 = Gender__94681853;
+type Id__246398552 = Nat;
+type Id__375302756 = Id__389469852;
+type Id__389469852 = Nat;
+type Id__404336434 = Id__389469852;
+type Id__471385351 = Id__389469852;
+type Id__636884967 = Id__389469852;
+type Internal__283199666<K, V> =
+  {children : [var ?Node__204828119<K, V>]; data : Data__44217153<K, V>};
+type Leaf__598469445<K, V> = {data : Data__44217153<K, V>};
+type List__355132335<T> =
+  {
+    var blockIndex : Nat__227979830;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__227979830
+  };
+type List__836382695<T> = List__355132335<T>;
+type Map__230067015<K, V> = Map__405889023<K, V>;
+type Map__405889023<K, V> = Map__603270868<K, V>;
+type Map__603270868<K, V> =
+  {var root : Node__204828119<K, V>; var size : Nat__227979830};
+type Nat__227979830 = Nat__920180692;
+type Nat__920180692 = Nat;
+type NewActor__327868545 =
+  {
+    accessControlState : AccessControlState__201339279;
+    activity : List__836382695<ActivityEntry__1056505511>;
+    classes : Map__230067015<Id__246398552, Class__536005870>;
+    counters :
+      {
+        var nextActivityId : Id__246398552;
+        var nextClassId : Id__246398552;
+        var nextEnrollmentId : Id__246398552;
+        var nextStudentId : Id__246398552;
+        var nextTeacherId : Id__246398552
+      };
+    enrollments : Map__230067015<Id__246398552, Enrollment__1016022953>;
+    students : Map__230067015<Id__246398552, Student__732417880>;
+    teachers : Map__230067015<Id__246398552, Teacher__51720400>
+  };
+type Node__204828119<K, V> =
+  {#internal : Internal__283199666<K, V>; #leaf : Leaf__598469445<K, V>};
+type StudentStatus__291312967 = StudentStatus__584564141;
+type StudentStatus__584564141 =
+  {#active; #graduated; #inactive; #transferred};
+type StudentStatus__918615298 =
+  {#active; #graduated; #inactive; #transferred};
+type Student__26715999 =
+  {
+    classIds : [Id__471385351];
+    createdAt : Timestamp__301639476;
+    dateOfBirth : Text;
+    gender : Gender__996925424;
+    guardianName : Text;
+    guardianPhone : Text;
+    id : Id__471385351;
+    name : Text;
+    status : StudentStatus__291312967;
+    updatedAt : Timestamp__301639476
+  };
+type Student__732417880 =
+  {
+    classIds : [Id__246398552];
+    createdAt : Timestamp__637991794;
+    dateOfBirth : Text;
+    gender : Gender__183540169;
+    guardianName : Text;
+    guardianPhone : Text;
+    id : Id__246398552;
+    name : Text;
+    status : StudentStatus__918615298;
+    updatedAt : Timestamp__637991794
+  };
+type Teacher__51720400 =
+  {
+    createdAt : Timestamp__637991794;
+    email : Text;
+    id : Id__246398552;
+    name : Text;
+    phone : Text;
+    subject : Text;
+    updatedAt : Timestamp__637991794
+  };
+type Teacher__896081680 =
+  {
+    createdAt : Timestamp__301639476;
+    email : Text;
+    id : Id__375302756;
+    name : Text;
+    phone : Text;
+    subject : Text;
+    updatedAt : Timestamp__301639476
+  };
+type Timestamp__301639476 = Int;
+type Timestamp__637991794 = Int;
+type UserRole__91647283 = {#admin; #guest; #user};
+{
+  "20260923_120000" : (_old : {}) -> NewActor__327868545
+}
+actor  {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__230067015<Principal, UserRole__91647283>
+    };
+  stable activity :
+    {
+      var blockIndex : Nat__227979830;
+      var blocks : [var [var ?ActivityEntry__227627608]];
+      var elementIndex : Nat__227979830
+    };
+  stable classes :
+    {
+      var root : Node__204828119<Id__389469852, Class__199118982>;
+      var size : Nat__227979830
+    };
+  stable counters :
+    {
+      var nextActivityId : Id__389469852;
+      var nextClassId : Id__389469852;
+      var nextEnrollmentId : Id__389469852;
+      var nextStudentId : Id__389469852;
+      var nextTeacherId : Id__389469852
+    };
+  stable enrollments :
+    {
+      var root : Node__204828119<Id__389469852, Enrollment__624009645>;
+      var size : Nat__227979830
+    };
+  stable students :
+    {
+      var root : Node__204828119<Id__389469852, Student__26715999>;
+      var size : Nat__227979830
+    };
+  stable teachers :
+    {
+      var root : Node__204828119<Id__389469852, Teacher__896081680>;
+      var size : Nat__227979830
+    }
+};

@@ -1,0 +1,264 @@
+type Value = 
+ variant {
+   "bool": bool;
+   float: float64;
+   "int": int;
+   "nat": nat;
+   "null";
+   "text": text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type Timestamp = int;
+type TeacherUpdate = 
+ record {
+   email: opt text;
+   name: opt text;
+   phone: opt text;
+   subject: opt text;
+ };
+type TeacherInput = 
+ record {
+   email: text;
+   name: text;
+   phone: text;
+   subject: text;
+ };
+type TeacherFilter = record {search: opt text;};
+type Teacher = 
+ record {
+   createdAt: Timestamp;
+   email: text;
+   id: Id;
+   name: text;
+   phone: text;
+   subject: text;
+   updatedAt: Timestamp;
+ };
+type StudentUpdate = 
+ record {
+   dateOfBirth: opt text;
+   gender: opt Gender;
+   guardianName: opt text;
+   guardianPhone: opt text;
+   name: opt text;
+   status: opt StudentStatus;
+ };
+type StudentStatus = 
+ variant {
+   active;
+   graduated;
+   inactive;
+   transferred;
+ };
+type StudentInput = 
+ record {
+   dateOfBirth: text;
+   gender: Gender;
+   guardianName: text;
+   guardianPhone: text;
+   name: text;
+   status: StudentStatus;
+ };
+type StudentFilter = 
+ record {
+   classId: opt Id;
+   search: opt text;
+   status: opt StudentStatus;
+ };
+type Student = 
+ record {
+   classIds: vec Id;
+   createdAt: Timestamp;
+   dateOfBirth: text;
+   gender: Gender;
+   guardianName: text;
+   guardianPhone: text;
+   id: Id;
+   name: text;
+   status: StudentStatus;
+   updatedAt: Timestamp;
+ };
+type Result__1 = 
+ variant {
+   err: Error;
+   ok;
+ };
+type Result = 
+ record {
+   hasMore: bool;
+   rows: vec vec Cell;
+ };
+type Id = nat;
+type Gender = 
+ variant {
+   female;
+   male;
+   other;
+ };
+type Error = 
+ variant {
+   AmbiguousAttribute: record {
+                         field: text;
+                         sources: vec text;
+                       };
+   FrontendOriginMismatch: record {
+                             expected: vec text;
+                             got: text;
+                           };
+   FrontendOriginsNotConfigured;
+   MalformedCandid;
+   MissingField: text;
+   MixedSsoSources: record {
+                      otherKeys: vec text;
+                      ssoKeys: vec text;
+                    };
+   NoAttributes;
+   Stale: record {ageNs: nat;};
+   UnknownNonce;
+   UntrustedSsoSource: record {domain: text;};
+ };
+type EnrollmentInput = 
+ record {
+   classId: Id;
+   studentId: Id;
+ };
+type EnrollmentFilter = 
+ record {
+   classId: opt Id;
+   studentId: opt Id;
+ };
+type Enrollment = 
+ record {
+   classId: Id;
+   enrolledAt: Timestamp;
+   id: Id;
+   studentId: Id;
+ };
+type DashboardStats = 
+ record {
+   classCount: nat;
+   enrollmentCount: nat;
+   studentCount: nat;
+   studentsPerClass: vec ClassDistribution;
+   teacherCount: nat;
+ };
+type ClassUpdate = 
+ record {
+   capacity: opt nat;
+   gradeLevel: opt text;
+   homeroomTeacherId: opt Id;
+   name: opt text;
+ };
+type ClassInput = 
+ record {
+   capacity: nat;
+   gradeLevel: text;
+   homeroomTeacherId: opt Id;
+   name: text;
+ };
+type ClassFilter = 
+ record {
+   homeroomTeacherId: opt Id;
+   search: opt text;
+ };
+type ClassDistribution = 
+ record {
+   classId: Id;
+   className: text;
+   studentCount: nat;
+ };
+type Class = 
+ record {
+   capacity: nat;
+   createdAt: Timestamp;
+   enrolledCount: nat;
+   gradeLevel: text;
+   homeroomTeacherId: opt Id;
+   id: Id;
+   name: text;
+   updatedAt: Timestamp;
+ };
+type Cell = 
+ record {
+   name: text;
+   value: Value;
+ };
+type ActivityKind = 
+ variant {
+   classCreated;
+   classDeleted;
+   classUpdated;
+   enrollmentAdded;
+   enrollmentRemoved;
+   studentCreated;
+   studentDeleted;
+   studentUpdated;
+   teacherCreated;
+   teacherDeleted;
+   teacherUpdated;
+ };
+type ActivityEntry = 
+ record {
+   at: Timestamp;
+   id: Id;
+   kind: ActivityKind;
+   message: text;
+   performedBy: principal;
+ };
+service : {
+  _initialize_access_control: () -> ();
+  _internet_identity_sign_in_finish: () -> (Result__1);
+  _internet_identity_sign_in_start: () -> (blob);
+  /// Enroll a student into a class. Admin only.
+  addEnrollment: (input: EnrollmentInput) -> (Enrollment);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  /// Create a class. Admin only.
+  createClass: (input: ClassInput) -> (Class);
+  /// Create a student. Admin only.
+  createStudent: (input: StudentInput) -> (Student);
+  /// Create a teacher. Admin only.
+  createTeacher: (input: TeacherInput) -> (Teacher);
+  /// Delete a class. Admin only.
+  deleteClass: (id: Id) -> (bool);
+  /// Delete a student. Admin only.
+  deleteStudent: (id: Id) -> (bool);
+  /// Delete a teacher. Admin only.
+  deleteTeacher: (id: Id) -> (bool);
+  execute: (qJson: text) -> (Result) query;
+  /// Return the backend API documentation as Markdown.
+  getApiDoc: () -> (text) query;
+  getCallerUserRole: () -> (UserRole) query;
+  /// Fetch a single class by id.
+  getClass: (id: Id) -> (opt Class) query;
+  /// Aggregate counts for the dashboard.
+  getDashboardStats: () -> (DashboardStats) query;
+  /// Most recent activity entries, newest first.
+  getRecentActivity: (limit: nat) -> (vec ActivityEntry) query;
+  /// Fetch a single student by id.
+  getStudent: (id: Id) -> (opt Student) query;
+  /// Fetch a single teacher by id.
+  getTeacher: (id: Id) -> (opt Teacher) query;
+  isCallerAdmin: () -> (bool) query;
+  /// List classes, optionally filtered by search text or homeroom teacher.
+  listClasses: (filter: ClassFilter) -> (vec Class) query;
+  /// List enrollments, optionally filtered by student or class.
+  listEnrollments: (filter: EnrollmentFilter) -> (vec Enrollment) query;
+  /// List students, optionally filtered by search text, class, or status.
+  listStudents: (filter: StudentFilter) -> (vec Student) query;
+  /// List teachers, optionally filtered by search text.
+  listTeachers: (filter: TeacherFilter) -> (vec Teacher) query;
+  /// Remove an enrollment. Admin only.
+  removeEnrollment: (id: Id) -> (bool);
+  schema: () -> (text) query;
+  /// Update a class, including homeroom teacher and capacity. Admin only.
+  updateClass: (id: Id, update: ClassUpdate) -> (opt Class);
+  /// Update a student. Admin only.
+  updateStudent: (id: Id, update: StudentUpdate) -> (opt Student);
+  /// Update a teacher. Admin only.
+  updateTeacher: (id: Id, update: TeacherUpdate) -> (opt Teacher);
+}

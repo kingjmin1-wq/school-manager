@@ -1,0 +1,20 @@
+{
+  "overview": "A school management system for tracking students, teachers, classes, and enrollments with a statistics dashboard.",
+  "features": [
+    "Manage student records with search and filters",
+    "Manage teachers and their subjects",
+    "Create classes and assign homeroom teachers",
+    "Enroll students into classes",
+    "Dashboard with school-wide statistics",
+    "Secure sign-in with Internet Identity"
+  ],
+  "category": "school-management",
+  "tags": [
+    "education",
+    "management",
+    "dashboard",
+    "students",
+    "teachers"
+  ],
+  "last_updated": "2026-09-23T09:17:19.525Z"
+}
